@@ -4,29 +4,29 @@ resource "aws_key_pair" "ssh_key" {
 }
 
 module "label" {
-  source = "../../modules/label"
+  source = "../modules/label"
   label  = "${var.label}"
   tags   = "${var.tags}"
 }
 
 module "vpc" {
-  source   = "../../modules/vpc"
+  source   = "../modules/vpc"
   vpc_name = "${module.label.id}"
 }
 
 module "security_group" {
-  source              = "../../modules/securitygroup"
+  source              = "../modules/securitygroup"
   name                = "${module.label.id}"
   vpc_id              = "${module.vpc.vpc_id}"
   ingress_cidr_blocks = "${var.ingress_cidr_blocks}"
 }
 
 module "ami" {
-  source = "../../modules/amisearch"
+  source = "../modules/amisearch"
 }
 
 module "instance" {
-  source                 = "../../modules/instance"
+  source                 = "../modules/instance"
   name                   = "${module.label.id}"
   ami                    = "${module.ami.ubuntu}"
   key_name               = "${var.sshkey_path}"
